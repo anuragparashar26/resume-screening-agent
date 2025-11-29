@@ -193,21 +193,64 @@ def display_session_historical_results(evaluation: Dict[str, Any]) -> None:
 
 
 def run_app() -> None:
-    st.set_page_config(page_title="Resume Screening Agent", layout="wide")
+    st.set_page_config(
+        page_title="Resume Screening Agent", 
+        layout="wide",
+        initial_sidebar_state="auto"
+    )
+    
+    # Add mobile-responsive CSS
+    st.markdown("""
+        <style>
+        /* Better mobile responsiveness */
+        @media (max-width: 768px) {
+            .stTextInput, .stTextArea, .stFileUploader {
+                width: 100% !important;
+            }
+            .stButton > button {
+                width: 100% !important;
+            }
+            section[data-testid="stSidebar"] {
+                width: 100% !important;
+            }
+        }
+        /* Ensure dataframes are scrollable on mobile */
+        .stDataFrame {
+            overflow-x: auto !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
     
     # Initialize session storage
     init_session_storage()
+    
+    # Initialize API key in session state (per-user, not shared)
+    if "user_api_key" not in st.session_state:
+        st.session_state.user_api_key = ""
 
     st.sidebar.title("Configuration")
     settings = get_settings()
 
-    google_key_input = st.sidebar.text_input("Google API Key", type="password", value="")
-    if google_key_input:
-        set_google_api_key_in_env(google_key_input)
-    elif settings.google_api_key:
-        set_google_api_key_in_env(settings.google_api_key)
+    # Use session state to store user's API key (per-user, not shared across sessions)
+    google_key_input = st.sidebar.text_input(
+        "Google API Key", 
+        type="password", 
+        value=st.session_state.user_api_key,
+        help="Your API key is stored only in your browser session and not shared with others."
+    )
+    
+    # Update session state when user enters a key
+    if google_key_input != st.session_state.user_api_key:
+        st.session_state.user_api_key = google_key_input
+    
+    # Determine which API key to use (user's session key takes priority)
+    active_api_key = st.session_state.user_api_key or settings.google_api_key
+    
+    if active_api_key:
+        # Set it in env only for this request (for downstream libraries like google-generativeai)
+        set_google_api_key_in_env(active_api_key)
     else:
-        st.sidebar.warning("Google API key required. Get one from Google AI Studio.")
+        st.sidebar.warning("Google API key required. Get one from [Google AI Studio](https://aistudio.google.com/app/apikey).")
 
     # Check for optional Supabase
     supabase_client = get_supabase_client()
@@ -320,7 +363,7 @@ def run_app() -> None:
             return
 
         # Check API key
-        if not google_key_input and not settings.google_api_key:
+        if not active_api_key:
             st.error("Please provide a Google API Key in the sidebar.")
             return
 
