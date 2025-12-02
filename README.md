@@ -78,13 +78,24 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-3. **Run the application**
+3. **Configure Google API Key**
+
+   **For local development:**
+   ```bash
+   # Create secrets file
+   cp .streamlit/secrets.toml.example .streamlit/secrets.toml
+   # Edit .streamlit/secrets.toml and add your API key
+   ```
+
+   **For Streamlit Cloud deployment:**
+   - Go to your app's dashboard → Settings → Secrets
+   - Add: `GOOGLE_API_KEY = "your-google-api-key-here"`
+
+4. **Run the application**
 
 ```bash
 streamlit run app.py
 ```
-
-4. **Enter your Google API Key** in the sidebar when the app opens
 
 ### Optional: Persistent Storage with Supabase
 
@@ -141,7 +152,7 @@ CREATE POLICY "Allow anonymous delete on evaluation_results" ON evaluation_resul
 
 ## Usage Guide
 
-1. **Enter your Google API Key** in the sidebar (required for AI evaluation)
+1. **Ensure Google API Key is configured** (via Streamlit Cloud secrets or local secrets.toml)
 2. **Enter a Job Description** and optional Job Title in the main form
 3. **Upload resumes** - Drag and drop or browse for PDF/DOCX files (max 5MB each)
 4. **Click "Evaluate Resumes"** to run AI-powered scoring

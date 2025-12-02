@@ -223,30 +223,18 @@ def run_app() -> None:
     # Initialize session storage
     init_session_storage()
     
-    # Initialize API key in session state (per-user, not shared)
-    if "user_api_key" not in st.session_state:
-        st.session_state.user_api_key = ""
-
+    # Get Google API key from Streamlit Cloud secrets
+    # To configure: Add GOOGLE_API_KEY in Streamlit Cloud Dashboard -> App Settings -> Secrets
+    # Format in secrets: GOOGLE_API_KEY = "your-api-key-here"
+    active_api_key = st.secrets.get("GOOGLE_API_KEY", "")
+    
     st.sidebar.title("Configuration")
-
-    # Use session state to store user's API key (per-user, not shared across sessions)
-    google_key_input = st.sidebar.text_input(
-        "Google API Key", 
-        type="password", 
-        value=st.session_state.user_api_key,
-        help="Your API key is stored only in your browser session and not shared with others."
-    )
     
-    # Update session state when user enters a key
-    if google_key_input != st.session_state.user_api_key:
-        st.session_state.user_api_key = google_key_input
-    
-    # Use ONLY the user's session key - never use environment variables (shared on Streamlit Cloud)
-    active_api_key = st.session_state.user_api_key
-    
-    if not active_api_key:
-        st.sidebar.warning("⚠️ Google API key required. Get one from [Google AI Studio](https://aistudio.google.com/app/apikey).")
-        st.sidebar.info("Your API key is private and only stored in your browser session.")
+    if active_api_key:
+        st.sidebar.success("✅ Google API Key configured")
+    else:
+        st.sidebar.error("❌ Google API Key not configured")
+        st.sidebar.info("Admin: Add GOOGLE_API_KEY to Streamlit Cloud secrets.")
 
     # Check for optional Supabase
     supabase_client = get_supabase_client()
@@ -360,7 +348,7 @@ def run_app() -> None:
 
         # Check API key
         if not active_api_key:
-            st.error("Please provide a Google API Key in the sidebar.")
+            st.error("Google API Key not configured. Please contact the admin to add GOOGLE_API_KEY to Streamlit Cloud secrets.")
             return
 
         # parse resumes
