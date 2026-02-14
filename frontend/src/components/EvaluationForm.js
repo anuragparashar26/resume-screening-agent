@@ -16,7 +16,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 function EvaluationForm({ onEvaluate, loading }) {
   const [jobTitle, setJobTitle] = useState('');
   const [jobDescription, setJobDescription] = useState('');
-  const [apiKey, setApiKey] = useState('');
   const [resumes, setResumes] = useState([]);
   const [errors, setErrors] = useState({});
 
@@ -47,13 +46,9 @@ function EvaluationForm({ onEvaluate, loading }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     
-    // Validate
     const newErrors = {};
     if (!jobDescription.trim()) {
       newErrors.jobDescription = 'Job description is required';
-    }
-    if (!apiKey.trim()) {
-      newErrors.apiKey = 'Google API key is required';
     }
     if (resumes.length === 0) {
       newErrors.resumes = 'At least one resume is required';
@@ -64,11 +59,9 @@ function EvaluationForm({ onEvaluate, loading }) {
       return;
     }
 
-    // Create FormData
     const formData = new FormData();
     formData.append('job_description', jobDescription);
     formData.append('job_title', jobTitle);
-    formData.append('api_key', apiKey);
     resumes.forEach(resume => {
       formData.append('resumes', resume);
     });
@@ -90,19 +83,6 @@ function EvaluationForm({ onEvaluate, loading }) {
       </Typography>
 
       <Box component="form" onSubmit={handleSubmit} noValidate>
-        {/* API Key */}
-        <TextField
-          fullWidth
-          label="Google Gemini API Key"
-          type="password"
-          value={apiKey}
-          onChange={(e) => setApiKey(e.target.value)}
-          error={!!errors.apiKey}
-          helperText={errors.apiKey || 'Get your API key from https://aistudio.google.com/app/apikey'}
-          margin="normal"
-          required
-        />
-
         {/* Job Title */}
         <TextField
           fullWidth

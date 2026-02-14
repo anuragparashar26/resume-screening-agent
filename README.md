@@ -2,12 +2,11 @@
 
 A modern web application that helps recruiters evaluate and rank resumes against a Job Description (JD) using Google Gemini AI with a React frontend and FastAPI backend.
 
-
 ## Features
 
 - **Upload Job Descriptions** - Paste or type the JD for the position
 - **Upload Multiple Resumes** - Support for PDF and DOCX formats (max 5MB each)
-- **AI-Powered Evaluation** - Uses Google Gemini 2.0 Flash Exp for intelligent scoring
+- **AI-Powered Evaluation** - Uses Google Gemini for intelligent scoring
 - **Hybrid Scoring System** - Combines LLM analysis (60%) with embedding similarity (40%)
 - **Skills Analysis** - Identifies matching and missing skills for each candidate
 - **Match Score & Summary** - 0-100 score with detailed fit summary
@@ -15,13 +14,14 @@ A modern web application that helps recruiters evaluate and rank resumes against
 - **Browser Storage History** - All evaluations stored in browser localStorage
 - **View & Delete Past Evaluations** - Manage your evaluation history locally
 - **Mobile Responsive** - Works on desktop and mobile devices
-- **Modern UI** - Material-UI based React interface
+- **Modern UI** - Material-UI based React interface with routing
+- **Secure Configuration** - API key stored in environment variables
 
 ## Tech Stack
 
 | Component            | Technology                      | Purpose                               |
 | -------------------- | ------------------------------- | ------------------------------------- |
-| **Frontend**         | React + Material-UI             | Modern web UI                         |
+| **Frontend**         | React + Material-UI + React Router | Modern web UI with navigation     |
 | **Backend**          | FastAPI                         | REST API server                       |
 | **LLM**              | Google Gemini                   | Resume evaluation & scoring           |
 | **LLM Framework**    | LangChain                       | Prompt orchestration & output parsing |
@@ -35,6 +35,7 @@ skillscreen/
 ├── backend/
 │   ├── main.py                # FastAPI backend server
 │   ├── config.py              # Environment loader & settings
+│   ├── .env.example           # Environment variables template
 │   ├── ai/
 │   │   ├── __init__.py
 │   │   ├── prompts.py         # LangChain prompt templates
@@ -50,7 +51,12 @@ skillscreen/
 │   │   │   ├── EvaluationForm.js
 │   │   │   ├── ResultsDisplay.js
 │   │   │   └── HistorySidebar.js
-│   │   ├── App.js             # Main React component
+│   │   ├── pages/
+│   │   │   ├── About.js       # About page
+│   │   │   ├── Contact.js     # Contact page
+│   │   │   ├── Privacy.js     # Privacy policy
+│   │   │   └── Terms.js       # Terms of service
+│   │   ├── App.js             # Main React component with routing
 │   │   ├── App.css
 │   │   ├── index.js           # React entry point
 │   │   └── index.css
@@ -71,13 +77,7 @@ skillscreen/
 
 ### Installation
 
-#### Backend Setup
-
-1. **Clone the repository**
-
-```bash
-git clone https://github.com/anuragparashar26/skillscreen.git
-cd skillscreen
+#### Backend S/backend
 ```
 
 2. **Create virtual environment and install Python dependencies**
@@ -86,6 +86,25 @@ cd skillscreen
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+```
+
+3. **Configure environment variables**
+
+```bash
+# Copy the example environment file
+cp .env.example .env
+
+# Edit .env and add your Google API Key
+# Get your API key from: https://aistudio.google.com/app/apikey
+# GOOGLE_API_KEY=your_api_key_here
+```
+
+4. **Start the backend server**
+
+```bash
+# Make sure you're in the backend directory with virtual environment activated
+``` 
+uvicorn main:app --reload
 ```
 
 3. **Start the backend server**
@@ -100,33 +119,30 @@ The backend API will be available at `http://localhost:8000`
 #### Frontend Setup
 
 1. **Navigate to the frontend directory**
-
-```bash
-cd frontend
-```
-
-2. **Install Node dependencies**
-
-```bash
-npm install
-```
-
-3. **Configure environment variables**
-
-```bash
-cp .env.example .env
-# Edit .env if needed (default points to http://localhost:8000)
-```
-
-4. **Start the development server**
+Start the development server**
 
 ```bash
 npm start
 ```
 
-The React app will open at `http://localhost:3000`
+The React app will open at `http://localhost:3000` with a landing page. Click "Get Started" to access the evaluation tool at `/evaluate`.
 
 ## Usage Guide
+
+1. **Visit the landing page** at `http://localhost:3000`
+2. **Click "Get Started"** or navigate to `/evaluate` to access the evaluation tool
+3. **Enter Job Title** (optional) and **Job Description**
+4. **Upload resumes** - Drag and drop or browse for PDF/DOCX files (max 5MB each)
+5. **Click "Evaluate Resumes"** to run AI-powered scoring
+6. **View ranked results** with scores, summaries, and skill analysis
+7. **Download CSV** for offline analysis or sharing
+8. **Click history items** in the sidebar to view past evaluations (stored in browser)
+9. **Delete evaluations** using the delete icon in the sidebar
+
+**Note:** 
+- Google API key is now configured on the server side via environment variables (no need to enter it in the form)
+- All evaluation history is stored in your browser's localStorage and will persist until you clear browser data
+
 
 1. **Enter your Google API Key** in the form (get one from [Google AI Studio](https://aistudio.google.com/app/apikey))
 2. **Enter Job Title** (optional) and **Job Description**

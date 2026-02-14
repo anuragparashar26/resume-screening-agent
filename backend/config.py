@@ -12,10 +12,9 @@ load_dotenv()
 
 
 @dataclass
-
 class Settings:
     """Application settings loaded from environment."""
-    pass
+    google_api_key: str
 
 
 def get_settings() -> Settings:
@@ -23,4 +22,11 @@ def get_settings() -> Settings:
 
     Values can be provided via a `.env` file or environment variables.
     """
-    return Settings()
+    google_api_key = os.getenv("GOOGLE_API_KEY")
+    if not google_api_key:
+        raise ValueError(
+            "GOOGLE_API_KEY environment variable is required. "
+            "Get your API key from https://aistudio.google.com/app/apikey"
+        )
+    
+    return Settings(google_api_key=google_api_key)

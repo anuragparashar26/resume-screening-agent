@@ -22,7 +22,6 @@ import { format } from 'date-fns';
 function ResultsDisplay({ evaluation }) {
   const { job_title, job_description, created_at, results } = evaluation;
 
-  // Sort results by score
   const sortedResults = [...results].sort((a, b) => b.score - a.score);
 
   const handleDownloadCSV = () => {

@@ -10,16 +10,18 @@ import {
   Drawer,
   IconButton,
   useMediaQuery,
-  AppBar,
-  Toolbar,
   Alert,
   Snackbar
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import EvaluationForm from './components/EvaluationForm';
 import ResultsDisplay from './components/ResultsDisplay';
 import HistorySidebar from './components/HistorySidebar';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 import axios from 'axios';
 import './App.css';
 
@@ -46,7 +48,147 @@ const loadFromLocalStorage = () => {
 };
 
 function App() {
-  const [darkMode, setDarkMode] = useState(true);
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/evaluate" element={<EvaluatePage />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+function LandingPage() {
+  const navigate = useNavigate();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+
+  return (
+    <div className="app-wrapper">
+      <nav className="navbar nav-with-toggle">
+        <div className="nav-container">
+          <div className="nav-logo">
+            <img src="/icons/black.png" alt="SkillScreen logo" className="logo-icon" style={{height:36, width:36, marginRight:8}} />
+            <span className="logo-text">SkillScreen</span>
+          </div>
+          <button
+            className="nav-toggle"
+            type="button"
+            aria-label="Toggle navigation"
+            aria-expanded={mobileNavOpen}
+            onClick={() => setMobileNavOpen(!mobileNavOpen)}
+          >
+            ☰
+          </button>
+          <div className={`nav-links ${mobileNavOpen ? 'mobile-open' : ''}`}> 
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <button className="nav-cta" onClick={() => navigate('/evaluate')}>
+              Get Started
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <section className="hero-section redesigned-hero" id="home">
+        <div className="hero-content-wrapper">
+          <div className="hero-main-content">
+            <span className="redesigned-badge">AI Resume Screening</span>
+            <h1 className="hero-title redesigned-title">
+              <span className="gradient-text">Screen Smarter.</span> <br />
+              <span>Hire Faster.</span>
+            </h1>
+            <p className="hero-subtitle redesigned-subtitle">
+              Instantly turn resumes into actionable, role-specific scorecards. <br />
+              Uncover strengths, gaps, and fit—no manual review required.
+            </p>
+            <div className="hero-cta-row redesigned-cta-row">
+              <button type="button" className="redesigned-cta" onClick={() => navigate('/evaluate')}>
+                Try SkillScreen Free
+              </button>
+            </div>
+            <div className="hero-trust-row redesigned-trust-row">
+              <span>PDF & DOCX</span>
+              <span>Role-Aware AI</span>
+              <span>Local History</span>
+              <span>No Signup Needed</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="features-section" id="features">
+        <div className="features-container">
+          <h2>Why Choose SkillScreen</h2>
+          <div className="features-grid">
+            <div className="feature-card">
+              <svg className="feature-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              <div>
+                <h3>Role-Aware Scoring</h3>
+                <p>Generate candidate scores aligned to the exact position requirements.</p>
+              </div>
+            </div>
+            <div className="feature-card">
+              <svg className="feature-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 11l3 3L22 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              <div>
+                <h3>Skill Gap Breakdown</h3>
+                <p>Get matched skills, missing skills, and decision-ready summaries.</p>
+              </div>
+            </div>
+            <div className="feature-card">
+              <svg className="feature-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              <div>
+                <h3>Recruiter Workflow Speed</h3>
+                <p>Reduce manual screening time and focus interviews on top candidates.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer className="footer">
+        <div className="footer-container">
+          <div className="footer-brand">
+            <div className="footer-logo">
+              <img src="/icons/white.png" alt="SkillScreen logo" className="logo-icon" style={{height:36, width:36, marginRight:8}} />
+              <span className="logo-text">SkillScreen</span>
+            </div>
+            <p>AI-powered resume screening for modern recruitment.</p>
+          </div>
+          <div className="footer-links">
+            <div className="footer-column">
+              <h4>Product</h4>
+              <a href="/about">About</a>
+              <a href="/contact">Contact</a>
+            </div>
+            <div className="footer-column">
+              <h4>Legal</h4>
+              <a href="/privacy">Privacy</a>
+              <a href="/terms">Terms</a>
+            </div>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <p>&copy; 2026 SkillScreen. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function EvaluatePage() {
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [evaluations, setEvaluations] = useState([]);
   const [selectedEvaluation, setSelectedEvaluation] = useState(null);
   const [currentResults, setCurrentResults] = useState(null);
@@ -58,13 +200,23 @@ function App() {
 
   const theme = createTheme({
     palette: {
-      mode: darkMode ? 'dark' : 'light',
+      mode: 'light',
       primary: {
-        main: '#2196f3',
+        main: '#7c3aed',
       },
       secondary: {
-        main: '#f50057',
+        main: '#14b8a6',
       },
+      background: {
+        default: '#f4f4f9',
+        paper: '#ffffff'
+      },
+    },
+    shape: {
+      borderRadius: 14,
+    },
+    typography: {
+      fontFamily: 'Inter, Segoe UI, Roboto, Arial, sans-serif',
     },
   });
 
@@ -176,96 +328,103 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-        {/* AppBar for mobile */}
-        {isMobile && (
-          <AppBar position="fixed">
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                edge="start"
-                onClick={() => setDrawerOpen(!drawerOpen)}
-                sx={{ mr: 2 }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-                SkillScreen
-              </Typography>
-            </Toolbar>
-          </AppBar>
-        )}
+      <div className="app-wrapper">
+        {/* Header/Navbar */}
+        <nav className="navbar nav-with-toggle">
+          <div className="nav-container">
+            <div className="nav-logo">
+              <span className="logo-text">SkillScreen</span>
+            </div>
+            <button
+              className="nav-toggle"
+              type="button"
+              aria-label="Toggle navigation"
+              aria-expanded={mobileNavOpen}
+              onClick={() => setMobileNavOpen(!mobileNavOpen)}
+            >
+              ☰
+            </button>
+            <div className={`nav-links ${mobileNavOpen ? 'mobile-open' : ''}`}>
+              <a href="/">Home</a>
+            </div>
+          </div>
+        </nav>
 
-        {/* Sidebar */}
-        {isMobile ? (
-          <Drawer
-            anchor="left"
-            open={drawerOpen}
-            onClose={() => setDrawerOpen(false)}
-            sx={{
-              '& .MuiDrawer-paper': { width: 280, boxSizing: 'border-box' }
-            }}
-          >
-            {sidebarContent}
-          </Drawer>
-        ) : (
-          <Drawer
-            variant="permanent"
-            sx={{
-              width: 280,
-              flexShrink: 0,
-              '& .MuiDrawer-paper': {
+        <Box sx={{ display: 'flex', minHeight: '100vh', background: 'linear-gradient(160deg, #f4f4f9 0%, #ede9fe 100%)' }}>
+          {/* Sidebar */}
+          {isMobile ? (
+            <Drawer
+              anchor="left"
+              open={drawerOpen}
+              onClose={() => setDrawerOpen(false)}
+              sx={{
+                '& .MuiDrawer-paper': { width: 280, boxSizing: 'border-box' }
+              }}
+            >
+              {sidebarContent}
+            </Drawer>
+          ) : (
+            <Drawer
+              variant="permanent"
+              sx={{
                 width: 280,
-                boxSizing: 'border-box',
-              },
+                flexShrink: 0,
+                '& .MuiDrawer-paper': {
+                  width: 280,
+                  boxSizing: 'border-box',
+                  borderRight: '1px solid #ddd6fe',
+                  background: 'rgba(255,255,255,0.94)',
+                  backdropFilter: 'blur(8px)'
+                },
+              }}
+            >
+              {sidebarContent}
+            </Drawer>
+          )}
+
+          {/* Main Content */}
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              p: 3,
+              width: { sm: `calc(100% - 280px)` },
+              mt: isMobile ? 8 : 0,
             }}
           >
-            {sidebarContent}
-          </Drawer>
-        )}
-
-        {/* Main Content */}
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            p: 3,
-            width: { sm: `calc(100% - 280px)` },
-            mt: isMobile ? 8 : 0,
-          }}
-        >
-          <Container maxWidth="lg">
-            {/* Header */}
-            <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Typography variant="h4" component="h1" gutterBottom>
-                  SkillScreen - Resume Screening Agent
+            <Container maxWidth="lg">
+              {/* Workspace Header */}
+              <Paper elevation={0} sx={{ p: 3, mb: 3, border: '1px solid #ddd6fe', background: 'rgba(255,255,255,0.9)' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Typography variant="h4" component="h1" gutterBottom>
+                    SkillScreen Workspace
+                  </Typography>
+                  <IconButton
+                    component="a"
+                    href="https://github.com/anuragparashar26/skillscreen"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <GitHubIcon />
+                  </IconButton>
+                </Box>
+                <Typography variant="body2" color="text.secondary">
+                  Unified scoring, matching insights, and faster shortlist decisions
                 </Typography>
-                <IconButton
-                  component="a"
-                  href="https://github.com/anuragparashar26/skillscreen"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <GitHubIcon />
-                </IconButton>
-              </Box>
-              <Typography variant="body2" color="text.secondary">
-                AI-powered resume evaluation using Google Gemini
-              </Typography>
-            </Paper>
+              </Paper>
 
-            {/* Main Content Area */}
-            {selectedEvaluation ? (
-              <ResultsDisplay evaluation={selectedEvaluation} />
-            ) : currentResults ? (
-              <ResultsDisplay evaluation={currentResults} />
-            ) : (
-              <EvaluationForm onEvaluate={handleEvaluate} loading={loading} />
-            )}
-          </Container>
+              {/* Main Content Area */}
+              {selectedEvaluation ? (
+                <ResultsDisplay evaluation={selectedEvaluation} />
+              ) : currentResults ? (
+                <ResultsDisplay evaluation={currentResults} />
+              ) : (
+                <EvaluationForm onEvaluate={handleEvaluate} loading={loading} />
+              )}
+            </Container>
+          </Box>
         </Box>
-      </Box>
+      </div>
 
       {/* Notification Snackbar */}
       <Snackbar

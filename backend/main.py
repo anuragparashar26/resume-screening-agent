@@ -14,13 +14,15 @@ import PyPDF2
 import docx
 
 from ai.evaluator import Evaluator
+from config import get_settings
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="SkillScreen API", version="1.0.0")
 
-# Configure CORS
+settings = get_settings()
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -81,16 +83,12 @@ def parse_resume(file_content: bytes, filename: str) -> Dict[str, str]:
 async def evaluate_resumes(
     job_description: str = Form(...),
     job_title: Optional[str] = Form(None),
-    api_key: str = Form(...),
     resumes: List[UploadFile] = File(...)
 ):
     """Evaluate resumes against a job description."""
     
     if not job_description or not resumes:
         raise HTTPException(status_code=400, detail="Job description and at least one resume are required")
-    
-    if not api_key:
-        raise HTTPException(status_code=400, detail="Google API key is required")
     
     MAX_FILE_SIZE_MB = 5
     MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
@@ -112,7 +110,7 @@ async def evaluate_resumes(
         await resume.seek(0)
     
     try:
-        evaluator = Evaluator(google_api_key=api_key)
+        evaluator = Evaluator(google_api_key=settings.google_api_key)
         results = evaluator.evaluate(job_description=job_description, resumes=parsed_resumes)
     except Exception as e:
         logger.exception("Evaluation failed")
