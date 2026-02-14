@@ -1,0 +1,33 @@
+.App {
+  min-height: 100vh;
+}
+
+/* Ensure proper scrolling on mobile */
+@media (max-width: 768px) {
+  .MuiDrawer-paper {
+    max-width: 280px;
+  }
+  
+  .MuiTableContainer-root {
+    overflow-x: auto;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

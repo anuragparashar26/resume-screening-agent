@@ -16,7 +16,6 @@ class EvaluationResult(BaseModel):
     missing_skills: List[str] = Field(description="List of required skills missing from the resume")
 
 
-# JSON output parser for structured responses
 evaluation_parser = JsonOutputParser(pydantic_object=EvaluationResult)
 
 

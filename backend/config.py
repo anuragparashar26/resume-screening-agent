@@ -12,10 +12,10 @@ load_dotenv()
 
 
 @dataclass
+
 class Settings:
     """Application settings loaded from environment."""
-    supabase_url: Optional[str]
-    supabase_anon_key: Optional[str]
+    pass
 
 
 def get_settings() -> Settings:
@@ -23,7 +23,4 @@ def get_settings() -> Settings:
 
     Values can be provided via a `.env` file or environment variables.
     """
-    return Settings(
-        supabase_url=os.environ.get("SUPABASE_URL"),
-        supabase_anon_key=os.environ.get("SUPABASE_ANON_KEY"),
-    )
+    return Settings()
