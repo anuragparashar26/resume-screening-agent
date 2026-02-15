@@ -111,26 +111,38 @@ function ResultsDisplay({ evaluation }) {
                   <TableCell>{result.candidate_name}</TableCell>
                   <TableCell>
                     <Chip
-                      label={result.score}
+                      label={Number(result.score).toFixed(2)}
                       color={result.score >= 70 ? 'success' : result.score >= 50 ? 'warning' : 'error'}
                       size="small"
                     />
                   </TableCell>
                   <TableCell>
                     <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
-                      {(result.matching_skills || []).map((skill, i) => (
-                        <Chip key={i} label={skill} size="small" color="success" variant="outlined" />
-                      ))}
+                      {(result.matching_skills && result.matching_skills.length > 0) ? (
+                        result.matching_skills.map((skill, i) => (
+                          <Chip key={i} label={skill} size="small" color="success" variant="outlined" />
+                        ))
+                      ) : (
+                        <Chip label="No matching skills" size="small" color="default" variant="outlined" />
+                      )}
                     </Stack>
                   </TableCell>
                   <TableCell>
                     <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
-                      {(result.missing_skills || []).map((skill, i) => (
-                        <Chip key={i} label={skill} size="small" color="error" variant="outlined" />
-                      ))}
+                      {(result.missing_skills && result.missing_skills.length > 0) ? (
+                        result.missing_skills.map((skill, i) => (
+                          <Chip key={i} label={skill} size="small" color="error" variant="outlined" />
+                        ))
+                      ) : (
+                        <Chip label="No missing skills" size="small" color="default" variant="outlined" />
+                      )}
                     </Stack>
                   </TableCell>
-                  <TableCell>{result.summary}</TableCell>
+                  <TableCell>
+                    <Box sx={{ whiteSpace: 'pre-line', fontStyle: 'italic', color: 'text.secondary', fontSize: '0.95rem', p: 1, borderRadius: 1, background: '#f7f7fa' }}>
+                      {result.summary && result.summary.length > 0 ? result.summary : 'No summary provided.'}
+                    </Box>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -147,7 +159,7 @@ function ResultsDisplay({ evaluation }) {
                     #{index + 1} {result.candidate_name}
                   </Typography>
                   <Chip
-                    label={result.score}
+                    label={Number(result.score).toFixed(2)}
                     color={result.score >= 70 ? 'success' : result.score >= 50 ? 'warning' : 'error'}
                   />
                 </Box>
@@ -156,25 +168,35 @@ function ResultsDisplay({ evaluation }) {
                   Summary:
                 </Typography>
                 <Typography variant="body2" paragraph>
-                  {result.summary}
+                  <Box sx={{ whiteSpace: 'pre-line', fontStyle: 'italic', color: 'text.secondary', fontSize: '0.95rem', p: 1, borderRadius: 1, background: '#f7f7fa' }}>
+                    {result.summary && result.summary.length > 0 ? result.summary : 'No summary provided.'}
+                  </Box>
                 </Typography>
 
                 <Typography variant="body2" color="text.secondary" gutterBottom>
                   Matching Skills:
                 </Typography>
                 <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap sx={{ mb: 2 }}>
-                  {(result.matching_skills || []).map((skill, i) => (
-                    <Chip key={i} label={skill} size="small" color="success" variant="outlined" />
-                  ))}
+                  {(result.matching_skills && result.matching_skills.length > 0) ? (
+                    result.matching_skills.map((skill, i) => (
+                      <Chip key={i} label={skill} size="small" color="success" variant="outlined" />
+                    ))
+                  ) : (
+                    <Chip label="No matching skills" size="small" color="default" variant="outlined" />
+                  )}
                 </Stack>
 
                 <Typography variant="body2" color="text.secondary" gutterBottom>
                   Missing Skills:
                 </Typography>
                 <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
-                  {(result.missing_skills || []).map((skill, i) => (
-                    <Chip key={i} label={skill} size="small" color="error" variant="outlined" />
-                  ))}
+                  {(result.missing_skills && result.missing_skills.length > 0) ? (
+                    result.missing_skills.map((skill, i) => (
+                      <Chip key={i} label={skill} size="small" color="error" variant="outlined" />
+                    ))
+                  ) : (
+                    <Chip label="No missing skills" size="small" color="default" variant="outlined" />
+                  )}
                 </Stack>
               </CardContent>
             </Card>

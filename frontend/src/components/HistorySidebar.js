@@ -1,4 +1,5 @@
 import React from 'react';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   List,
@@ -15,7 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { format } from 'date-fns';
 
-function HistorySidebar({ evaluations, onSelectEvaluation, onDeleteEvaluation, onNewEvaluation, selectedId }) {
+function HistorySidebar({ evaluations, onSelectEvaluation, onDeleteEvaluation, onNewEvaluation, selectedId, onClose }) {
   const formatDate = (dateString) => {
     try {
       return format(new Date(dateString), 'MMM dd, yyyy');
@@ -26,10 +27,21 @@ function HistorySidebar({ evaluations, onSelectEvaluation, onDeleteEvaluation, o
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Toolbar>
-        <Typography variant="h6" noWrap component="div">
-          SkillScreen
-        </Typography>
+      <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <Box
+          sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+          onClick={() => window.location.href = '/'}
+        >
+          <img src="/icons/black.png" alt="SkillScreen logo" style={{height:32, width:32, marginRight:8}} />
+          <Typography variant="h6" noWrap component="div">
+            SkillScreen
+          </Typography>
+        </Box>
+        {onClose && (
+          <IconButton edge="end" aria-label="close" onClick={onClose} sx={{ ml: 1 }}>
+            <CloseIcon />
+          </IconButton>
+        )}
       </Toolbar>
       <Divider />
       
@@ -81,7 +93,11 @@ function HistorySidebar({ evaluations, onSelectEvaluation, onDeleteEvaluation, o
                 onClick={() => onSelectEvaluation(evaluation.evaluation_id)}
               >
                 <ListItemText
-                  primary={evaluation.job_title || 'Untitled'}
+                  primary={
+                    evaluation.job_title && evaluation.job_title.trim().length > 0
+                      ? evaluation.job_title
+                      : `Resume Screening - ${formatDate(evaluation.created_at)}`
+                  }
                   secondary={
                     <>
                       {formatDate(evaluation.created_at)}
