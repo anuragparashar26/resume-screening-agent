@@ -5,7 +5,7 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 import numpy as np
 
 
-GEMINI_EMBED_MODEL = "models/embedding-001"
+GEMINI_EMBED_MODEL = "models/gemini-embedding-001"
 
 
 class GeminiEmbeddingManager:
