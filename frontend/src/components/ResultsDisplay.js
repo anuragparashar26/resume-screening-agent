@@ -92,31 +92,31 @@ function ResultsDisplay({ evaluation }) {
         </Box>
 
         {/* Desktop Table View */}
-        <TableContainer sx={{ display: { xs: 'none', md: 'block' } }}>
-          <Table>
+        <TableContainer sx={{ display: { xs: 'none', md: 'block' }, overflowX: 'auto' }}>
+          <Table sx={{ minWidth: 1200, tableLayout: 'fixed' }}>
             <TableHead>
               <TableRow>
-                <TableCell><strong>Rank</strong></TableCell>
-                <TableCell><strong>Candidate</strong></TableCell>
-                <TableCell><strong>Score</strong></TableCell>
-                <TableCell><strong>Matching Skills</strong></TableCell>
-                <TableCell><strong>Missing Skills</strong></TableCell>
-                <TableCell><strong>Summary</strong></TableCell>
+                <TableCell sx={{ width: 70 }}><strong>Rank</strong></TableCell>
+                <TableCell sx={{ width: 190 }}><strong>Candidate</strong></TableCell>
+                <TableCell sx={{ width: 110 }}><strong>Score</strong></TableCell>
+                <TableCell sx={{ width: 290 }}><strong>Matching Skills</strong></TableCell>
+                <TableCell sx={{ width: 290 }}><strong>Missing Skills</strong></TableCell>
+                <TableCell sx={{ minWidth: 360 }}><strong>Summary</strong></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {sortedResults.map((result, index) => (
                 <TableRow key={index}>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>{result.candidate_name}</TableCell>
-                  <TableCell>
+                  <TableCell sx={{ verticalAlign: 'top' }}>{index + 1}</TableCell>
+                  <TableCell sx={{ verticalAlign: 'top', wordBreak: 'break-word' }}>{result.candidate_name}</TableCell>
+                  <TableCell sx={{ verticalAlign: 'top' }}>
                     <Chip
                       label={Number(result.score).toFixed(2)}
                       color={result.score >= 70 ? 'success' : result.score >= 50 ? 'warning' : 'error'}
                       size="small"
                     />
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ verticalAlign: 'top' }}>
                     <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
                       {(result.matching_skills && result.matching_skills.length > 0) ? (
                         result.matching_skills.map((skill, i) => (
@@ -127,7 +127,7 @@ function ResultsDisplay({ evaluation }) {
                       )}
                     </Stack>
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ verticalAlign: 'top' }}>
                     <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
                       {(result.missing_skills && result.missing_skills.length > 0) ? (
                         result.missing_skills.map((skill, i) => (
@@ -138,8 +138,8 @@ function ResultsDisplay({ evaluation }) {
                       )}
                     </Stack>
                   </TableCell>
-                  <TableCell>
-                    <Box sx={{ whiteSpace: 'pre-line', fontStyle: 'italic', color: 'text.secondary', fontSize: '0.95rem', p: 1, borderRadius: 1, background: '#f7f7fa' }}>
+                  <TableCell sx={{ verticalAlign: 'top' }}>
+                    <Box sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontStyle: 'italic', color: 'text.secondary', fontSize: '0.95rem', p: 1, borderRadius: 1, bgcolor: 'action.hover' }}>
                       {result.summary && result.summary.length > 0 ? result.summary : 'No summary provided.'}
                     </Box>
                   </TableCell>
