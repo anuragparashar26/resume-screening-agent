@@ -95,27 +95,54 @@ function LandingPage() {
       <section className="hero-section redesigned-hero" id="home">
         <div className="hero-content-wrapper">
           <div className="hero-main-content">
-            <span className="redesigned-badge">AI Resume Screening</span>
+            <div className="hero-eyebrow-row">
+              <span className="redesigned-badge">AI Resume Screening</span>
+              <span className="hero-availability">Built for small teams and high-volume hiring loops</span>
+            </div>
             <h1 className="hero-title redesigned-title">
-              <span className="gradient-text">Screen Smarter.</span> <br />
-              <span>Hire Faster.</span>
+              Hire with clarity,
+              <span className="gradient-text"> not guesswork.</span>
             </h1>
             <p className="hero-subtitle redesigned-subtitle">
-              Instantly turn resumes into actionable, role-specific scorecards. <br />
-              Uncover strengths, gaps, and fit, no manual review required.
+              Drop in a job description and a stack of resumes.
+              <br />
+              SkillScreen returns ranked candidates, skill gaps, and interview-ready notes in minutes.
             </p>
             <div className="hero-cta-row redesigned-cta-row">
               <button type="button" className="redesigned-cta" onClick={() => navigate('/evaluate')}>
-                Try SkillScreen
+                Run an Evaluation
               </button>
             </div>
             <div className="hero-trust-row redesigned-trust-row">
-              <span>PDF & DOCX</span>
-              <span>Role-Aware AI</span>
-              <span>Local History</span>
-              <span>No Signup Needed</span>
+              <span>PDF and DOCX parsing</span>
+              <span>Role-specific scoring</span>
+              <span>No account wall</span>
             </div>
           </div>
+          <aside className="hero-visual-side" aria-label="Evaluation preview">
+            <div className="hero-visual-card">
+              <p className="hero-visual-kicker">Latest evaluation snapshot</p>
+              <div className="hero-visual-role-row">
+                <h3>Frontend Engineer</h3>
+                <span>12 candidates</span>
+              </div>
+              <ul className="hero-visual-list">
+                <li>
+                  <span className="candidate-name">Candidate A</span>
+                  <span className="candidate-score strong">92</span>
+                </li>
+                <li>
+                  <span className="candidate-name">Candidate B</span>
+                  <span className="candidate-score">84</span>
+                </li>
+                <li>
+                  <span className="candidate-name">Candidate C</span>
+                  <span className="candidate-score">77</span>
+                </li>
+              </ul>
+              <p className="hero-visual-caption">Top gaps detected: system design depth, API performance tuning</p>
+            </div>
+          </aside>
         </div>
       </section>
 
